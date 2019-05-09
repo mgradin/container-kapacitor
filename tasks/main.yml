@@ -1,2 +1,5 @@
 ---
 # tasks file for container-kapacitor
+- import_tasks: kapacitor.yml
+  become: true
+
