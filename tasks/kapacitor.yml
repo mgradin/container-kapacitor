@@ -1,0 +1,29 @@
+---
+- name: Create kapacitor data directory
+  file: 
+    path: "{{ VAR_KAPACITOR_DIR }}"
+    recurse: yes
+    state: directory
+
+- name: Start kapacitor container
+  docker_container:
+    name: kapacitor
+    image: kapacitor:latest
+    pull: yes
+    state: started
+    env:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_LOGGING_LEVEL: INFO
+      KAPACITOR_REPORTING_ENABLED: false
+      KAPACITOR_INFLUXDB_0_URLS_0: "http://influxdb:8086"
+    labels:
+      traefik.backend=kapacitor
+      "traefik.frontend.rule=Host:{{ VAR_KAPACITOR_URL }}"
+      traefik.port=9092
+      traefik.enable=true
+    volumes:
+    - "{{ VAR_KAPACITOR_DIR }}:/var/lib/kapacitor:z"
+    links:
+    - influxdb
+    restart_policy: unless-stopped
+

@@ -1,2 +1,4 @@
 ---
 # defaults file for container-kapacitor
+VAR_KAPACITOR_DIR: /opt/kapacitor
+VAR_KAPACITOR_URL: kapacitor.example.com
